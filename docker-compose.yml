@@ -1,0 +1,65 @@
+version: "3"
+
+volumes:
+  auth-db:
+    driver: local
+  ticket-db:
+    driver: local
+services:
+  auth-db:
+    image: postgres
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+    ports:
+      - "5432:5432"
+    volumes:
+      - auth-db:/var/lib/postgresql/data
+      - ./server/go-auth/db/auth.sql:/var/lib/postgresql/auth.sql
+      - ./server/go-auth/dbrrr:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: "exit 0"
+  ticket-db:
+    image: postgres
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+    ports:
+      - "6543:5432"
+    volumes:
+      - ticket-db:/var/lib/postgresql/data
+      - ./server/ticket-service/db/ticket.sql:/var/lib/postgresql/ticket.sql
+      - ./server/ticket-service/db/csvs:/var/lib/postgresql/csvs
+      - ./server/ticket-service/db:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: "exit 0"
+  redis-server:
+    restart: on-failure
+    image: "redis"
+    ports:
+      - "6379:6379"
+  auth:
+    restart: on-failure
+    build:
+      context: ./server/go-auth
+      dockerfile: ./Dockerfile
+    depends_on:
+      auth-db:
+        condition: service_healthy
+      redis-server:
+        condition: service_started
+  ticket:
+    restart: on-failure
+    build:
+      context: ./server/ticket-service
+      dockerfile: ./Dockerfile
+    depends_on:
+      ticket-db:
+        condition: service_healthy
+  nginx:
+    restart: on-failure
+    build:
+      context: ./web
+      dockerfile: ./Dockerfile
+    ports:
+      - "8000:80"

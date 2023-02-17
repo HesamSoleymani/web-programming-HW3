@@ -1,0 +1,16 @@
+input {
+  padding: 15px;
+  font-size: 14px;
+  background: var(--c2);
+  border: 2px solid var(--c10);
+  border-radius: 12px;
+  color: var(--c1);
+  font-family: "Vazirmatn";
+  width: 0;
+  flex: 1 1 0;
+}
+
+input:focus {
+  outline: none;
+  border: 2px solid var(--c1);
+}

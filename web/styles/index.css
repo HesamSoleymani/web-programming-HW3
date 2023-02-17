@@ -1,0 +1,43 @@
+:root {
+  --c1: black;
+  --c2: white;
+  --c3: #f6f6f6;
+  --c4: #18465a;
+  --c5: #a9a9a9;
+  --c6: #4a304d;
+  --c7: #222222;
+  --c8: #666666;
+  --c9: #18465a;
+  --c10: #9ec1d7;
+  --c11: #1b1c27;
+  direction: rtl;
+}
+
+@font-face {
+  font-family: "Vazirmatn";
+  src: url("../assets/fonts/Vazirmatn-Regular.ttf") format("truetype");
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: "Vazirmatn";
+  src: url("../assets/fonts/Vazirmatn-Light.ttf") format("truetype");
+  font-weight: 200;
+}
+
+@font-face {
+  font-family: "Vazirmatn";
+  src: url("../assets/fonts/Vazirmatn-Bold.ttf") format("truetype");
+  font-weight: bold;
+}
+
+body {
+  margin: 0;
+  font-family: "Vazirmatn";
+}
+
+.page {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
